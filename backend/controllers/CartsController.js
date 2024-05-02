@@ -88,3 +88,16 @@ export const deleteCarts = async (req, res) => {
     res.status(400).json({ msg: error.message });
   }
 };
+
+export const deleteAllCarts = async (req, res) => {
+  try {
+    await Carts.destroy({
+      truncate: true, // truncate akan menghapus semua data tanpa menghiraukan constraints
+      cascade: true, // cascade akan menghapus data yang terkait dengan data yang dihapus
+      restartIdentity: true // restartIdentity akan mereset kembali nilai ID auto-increment
+    });
+    res.status(200).json({ msg: "All carts deleted" });
+  } catch (error) {
+    res.status(400).json({ msg: error.message });
+  }
+};

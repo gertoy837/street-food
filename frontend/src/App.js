@@ -9,6 +9,7 @@ import Register from "./Pages/Register";
 import DetailRestaurant from "./Pages/DetailRestaurant";
 import DetailMakanan from "./Pages/DetailMakanan";
 import Pesan from "./Pages/Checkout";
+import NotFound from "./Error/404";
 
 function App() {
   return (
@@ -21,10 +22,13 @@ function App() {
           <Route path="/kategori" element={<Kategori />} />
           <Route path="/kategori/:id" element={<Kategori />} />
           <Route path="/makanan" element={<Makanan />} />
+          <Route path="/makanan/search/:name" element={<Makanan />} />
+          <Route path="/makanan/search/" element={<Makanan />} />
           <Route path="/restaurant" element={<Restaurants />} />
           <Route path="/restaurant/:id" element={<DetailRestaurant />} />
           <Route path="/makanan/:id" element={<DetailMakanan />} />
           <Route path="/checkout" element={<Pesan />} />
+          <Route path="/*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </div>

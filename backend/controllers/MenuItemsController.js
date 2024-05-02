@@ -2,15 +2,18 @@ import path from "path";
 import fs from "fs";
 import MenuItems from "../models/MenuItemsModel.js";
 import Restaurants from "../models/RestaurantsModel.js";
+import { Op } from "sequelize";
 
 export const getMenuItems = async (req, res) => {
   try {
     const response = await MenuItems.findAll({
-      include: [{
-        model: Restaurants,
-        as: 'restaurant',
-        attributes: ['name'],
-      }],
+      include: [
+        {
+          model: Restaurants,
+          as: "restaurant",
+          attributes: ["name"],
+        },
+      ],
     });
     res.json(response);
   } catch (error) {
@@ -143,5 +146,22 @@ export const deleteMenuItems = async (req, res) => {
     res.status(200).json({ msg: "Menu Items deleted successfully" });
   } catch (error) {
     console.log(error.message);
+  }
+};
+
+export const searchMenuItems = async (req, res) => {
+  try {
+    const search = req.params.name || ''; // Get search term from query parameter
+    const response = await MenuItems.findAll({
+      where: {
+        name: {
+          [Op.like]: `%${search}%`, // Use Op.like for partial matching
+        },
+      },
+    });
+    res.json(response); // Send search results as JSON
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Error searching menu items');
   }
 };

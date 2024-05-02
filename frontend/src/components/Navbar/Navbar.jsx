@@ -1,5 +1,5 @@
-import { Fragment } from "react";
-import { NavLink } from "react-router-dom";
+import { Fragment, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -14,13 +14,19 @@ const navigation = [
   { name: "Restaurant", href: "/restaurant", current: false },
 ];
 
-const navRight = [{ name: "Login", href: "/login", current: true }];
+// const navRight = [{ name: "Login", href: "/login", current: true }];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Navbar() {
+  const [search, setSearch] = useState();
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    navigate(`/makanan/search/${search}`)
+  };
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -66,7 +72,7 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <form className="hidden sm:block search">
+                <form onSubmit={handleSubmit} className="hidden sm:block search">
                   <div className="relative rounded-md shadow-sm">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                       {/* <span className="text-gray-500 sm:text-sm">$</span> */}
@@ -79,8 +85,9 @@ export default function Navbar() {
                       type="text"
                       name="search"
                       id="search"
+                      onChange={(e) => setSearch(e.target.value)}
                       className="block w-full rounded-md border-0 py-1.5 pl-9 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      placeholder="Search..."
+                      placeholder="Masukkan Nama Makanan..."
                     />
                   </div>
                 </form>
@@ -199,16 +206,18 @@ export default function Navbar() {
               ))}
             </div>
             <div className="block sm:hidden search-mobile px-5 pb-3">
-              <form className="block sm:hidden search-mobile">
+              <form onSubmit={handleSubmit} className="block sm:hidden search-mobile">
                 <div className="relative flex">
                   <input
                     type="text"
                     name="search"
                     id="search"
+                    onChange={(e) => setSearch(e.target.value)}
                     className="block w-full rounded-md border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    placeholder="Search..."
+                    placeholder="Masukkan Nama Makanan..."
                   />
-                  <button className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                  <button 
+                   className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     Search
                   </button>
                 </div>

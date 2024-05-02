@@ -3,9 +3,11 @@ import axios from "axios";
 import { StarIcon } from "@heroicons/react/24/outline";
 import Navbar from "../components/Navbar/Navbar";
 import Contact from "../components/Home/Contact";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 
 const Makanan = () => {
+  const { name } = useParams();
+  const navigate = useNavigate();
   const [menuItems, setMenuItems] = useState([]);
   const [restaurant, setRestaurant] = useState([]);
   // modal
@@ -13,13 +15,32 @@ const Makanan = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState(null);
   const [quantity, setQuantity] = useState("");
   const [notes, setNotes] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
-    getMenuItems();
+    if (name) {
+      getMenuItemsBySearch();
+      setIsSearching(true);
+    } else {
+      getMenuItems();
+      setIsSearching(false);
+    }
     getRestaurant();
-  }, []);
+  }, [name]);
+
+  if (name === "undefined") {
+    navigate("/makanan");
+  }
+console.log(menuItems == '' ? "No menu items found" : menuItems);
   const getMenuItems = async () => {
     const response = await axios.get("http://localhost:5000/menu-items");
+    setMenuItems(response.data);
+  };
+
+  const getMenuItemsBySearch = async () => {
+    const response = await axios.get(
+      `http://localhost:5000/menu-items/search/${name}`
+    );
     setMenuItems(response.data);
   };
 
@@ -61,6 +82,7 @@ const Makanan = () => {
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center text-gray-800 mb-6 md:mb-8">
             Menu Kami
           </h2>
+          {menuItems == '' && <p className="text-center text-2xl">Makanan Tidak Tersedia...</p>}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6">
             {menuItems.map((item) => {
               const restaurantName =
@@ -121,9 +143,7 @@ const Makanan = () => {
                 <div className="bg-white rounded-lg shadow-xl max-w-md mx-auto relative">
                   <div className="p-6">
                     <div className="flex justify-between items-center mb-4">
-                      <h2 className="text-xl font-semibold">
-                        Pesan Makanan
-                      </h2>
+                      <h2 className="text-xl font-semibold">Pesan Makanan</h2>
                       <button
                         className="text-gray-500 hover:text-gray-500 focus:outline-none"
                         onClick={toggleModal}

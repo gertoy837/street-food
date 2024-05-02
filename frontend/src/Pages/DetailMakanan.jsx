@@ -7,20 +7,18 @@ import { NavLink, useParams } from "react-router-dom";
 const DetailMakanan = () => {
   const { id } = useParams();
   const [menuItems, setMenuItems] = useState([]);
+  const [restaurant, setRestaurant] = useState([]);
 
   useEffect(() => {
     getMenuItems();
+    getRestaurant();
   }, [id]);
+  
   const getMenuItems = async () => {
     const response = await axios.get(`http://localhost:5000/menu-items/${id}`);
     setMenuItems(response.data);
   };
 
-  const [restaurant, setRestaurant] = useState([]);
-
-  useEffect(() => {
-    getRestaurant();
-  }, []);
   const getRestaurant = async () => {
     const response = await axios.get("http://localhost:5000/restaurants");
     setRestaurant(response.data);
