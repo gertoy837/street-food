@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 
-const db = new Sequelize("upload_db", "phpmyadmin", "bismillah", {
+const db = new Sequelize("street-food", "phpmyadmin", "bismillah", {
   host: "localhost",
   dialect: "mysql",
   underscored: true,

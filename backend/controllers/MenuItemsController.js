@@ -153,6 +153,13 @@ export const searchMenuItems = async (req, res) => {
   try {
     const search = req.params.name || ''; // Get search term from query parameter
     const response = await MenuItems.findAll({
+      include: [
+        {
+          model: Restaurants,
+          as: "restaurant",
+          attributes: ["name"],
+        },
+      ],
       where: {
         name: {
           [Op.like]: `%${search}%`, // Use Op.like for partial matching

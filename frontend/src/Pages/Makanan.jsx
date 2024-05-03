@@ -31,7 +31,7 @@ const Makanan = () => {
   if (name === "undefined") {
     navigate("/makanan");
   }
-console.log(menuItems == '' ? "No menu items found" : menuItems);
+  
   const getMenuItems = async () => {
     const response = await axios.get("http://localhost:5000/menu-items");
     setMenuItems(response.data);
@@ -82,7 +82,9 @@ console.log(menuItems == '' ? "No menu items found" : menuItems);
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center text-gray-800 mb-6 md:mb-8">
             Menu Kami
           </h2>
-          {menuItems == '' && <p className="text-center text-2xl">Makanan Tidak Tersedia...</p>}
+          {menuItems == "" && (
+            <p className="text-center text-2xl">Makanan Tidak Tersedia...</p>
+          )}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6">
             {menuItems.map((item) => {
               const restaurantName =

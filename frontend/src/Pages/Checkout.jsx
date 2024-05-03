@@ -32,10 +32,13 @@ const Pesan = () => {
   };
 
   const Total = () => {
-    return cartItems.reduce(
+    const hargaAwal = cartItems.reduce(
       (total, item) => total + item.menu.price * item.quantity,
       0
     );
+    const ongkir = 15000;
+    const total = hargaAwal + ongkir;
+    return total;
   };
 
   // Modal Update
@@ -70,7 +73,6 @@ const Pesan = () => {
   };
   const closeDelete = () => {
     setIsDelete(false);
-    setIsUpdate(false);
   };
   const handleDelete = async () => {
     try {
@@ -190,10 +192,12 @@ const Pesan = () => {
           <div className="mt-8 border-t pt-4">
             <div className="flex justify-between items-center mb-4">
               <div className="">
+                <p className="text-lg font-bold">Ongkos Kirim:</p>
                 <p className="text-lg font-bold">Diskon:</p>
                 <p className="text-lg font-bold">Total:</p>
               </div>
               <div className="">
+                <p className="text-2xl font-bold text-right">Rp 15000</p>
                 <p className="text-2xl font-bold text-right">Rp 0</p>
                 <p className="text-2xl font-bold">Rp {Total()}</p>
               </div>
